@@ -26,3 +26,5 @@ db = SQLAlchemy(app)
 # Login Manager
 login_manager = LoginManager()
 login_manager.init_app(app)
+
+from application import routes

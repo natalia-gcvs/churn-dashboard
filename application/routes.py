@@ -103,7 +103,7 @@ def dashboard():
     # creating a state indexed version of the dataframe so we can lookup values
     state_data_indexed = state_data.set_index('state')
 
-    with open('us_state_test.json', 'r') as f:
+    with open('application/us_state_test.json', 'r') as f:
         content = json.load(f)
 
     # looping through the geojson object and adding a new property(churn_rate)
@@ -113,7 +113,7 @@ def dashboard():
 
     json_string = json.dumps(content)
 
-    with open('static/js/us_states.js', 'w') as f:
+    with open('application/static/js/us_states.js', 'w') as f:
         f.write("var statesData = " + json_string + ";")
 
     # ************************** End State Data Plot *****************************************************
