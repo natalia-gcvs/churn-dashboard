@@ -12,6 +12,9 @@ from application.models import ChurnDataPrep, TrainDataPrep, Users
 from flask import render_template, url_for, redirect, request, flash
 from flask_login import login_user, login_required, logout_user
 
+from dotenv import load_dotenv
+load_dotenv()
+
 
 
 def get_churn_rate_by_location(db, location, churn_col, table):
@@ -34,7 +37,7 @@ def send_email(name, email, subject, message):
     with smtplib.SMTP("smtp.gmail.com", port=587) as connection:
         connection.starttls()
         connection.login(user=smtp_username, password=smtp_password)
-        connection.sendmail(from_addr=smtp_username, to_addrs='nagair.goncalves@gmail.com',
+        connection.sendmail(from_addr=smtp_username, to_addrs=os.environ['from_to_address'],
                             msg=f'Subject: {subject}\n\n{name}\n{email}\n{message}')
 
 
@@ -48,6 +51,20 @@ def load_user(user_id):
 def handle_bad_request(error):
     return render_template('pages-error-400.html'), 400
 
+@app.route('/', methods=['GET', 'POST'])
+def login():
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        data = login_form.data
+        user = Users.query.filter_by(email=data['email']).first()
+        if user and check_password_hash(user.password, data['password']):
+            remember = data.get('remember_me')
+            login_user(user, remember=remember)
+            return redirect(url_for('dashboard'))
+        else:
+            flash('Incorrect email or password')
+            return redirect(url_for('login'))
+    return render_template("pages-login.html", form=login_form)
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
@@ -143,29 +160,13 @@ def get_data_table():
 @app.route("/contact", methods=['GET', 'POST'])
 @login_required
 def get_contact_page():
-    contact_form = ContactForm(request.form)
+    contact_form = ContactForm()
     if contact_form.validate_on_submit():
         data = contact_form.data
         send_email(data['name'], data['email'], data['subject'], data['message'])
         flash('Form submitted successfully!')
         return redirect(url_for("get_contact_page"))
     return render_template('pages-contact.html', form=contact_form)
-
-
-@app.route('/', methods=['GET', 'POST'])
-def login():
-    login_form = LoginForm()
-    if login_form.validate_on_submit():
-        data = login_form.data
-        user = Users.query.filter_by(email=data['email']).first()
-        if user and check_password_hash(user.password, data['password']):
-            remember = data.get('remember_me')
-            login_user(user, remember=remember)
-            return redirect(url_for('dashboard'))
-        else:
-            flash('Incorrect email or password')
-            return redirect(url_for('login'))
-    return render_template("pages-login.html", form=login_form)
 
 
 @app.route('/logout', methods=['GET', 'POST'])

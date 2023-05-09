@@ -19,7 +19,7 @@ csrf = CSRFProtect(app)
 bootstrap = Bootstrap(app)
 
 # Database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///customer_data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URI')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
