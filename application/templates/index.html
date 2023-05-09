@@ -1,0 +1,493 @@
+<!-- ======= Header ======= -->
+{% extends 'header.html' %}
+<!-- End Sidebar-->
+{% block title %}Dashboard{% endblock %}
+<body>
+{% block content %}
+
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Dashboard</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+          <li class="breadcrumb-item active">Dashboard</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section dashboard">
+      <div class="row">
+
+        <!-- Left side columns -->
+        <div class="col-lg-8">
+          <div class="row">
+
+          {% for key, value in statistics.items(): %}
+            <!-- Sales Card -->
+            <div class="col-xxl-4 col-md-6">
+              <div class="card info-card sales-card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+                    <li><a class="dropdown-item" href="{{url_for('dashboard', filter_id='This Year')}}">This Year</a></li>
+                    <li><a class="dropdown-item" href="{{url_for('dashboard', filter_id='Last Year')}}">Last Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <p class="card-title">{{key}}</p>
+                  {% if filter_id == '': %}
+                  <p>This Year</p>
+                  {% else: %}
+                  <p>{{filter_id}}</p>
+                  {% endif %}
+
+                  <div class="d-flex align-items-center">
+                    <div class="ps-3">
+                      <h6>{{ value }}</h6>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div><!-- End Sales Card -->
+            {% endfor %}
+
+            <!-- Reports -->
+            <div class="col-12">
+              <div class="card">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+                    <li><a class="dropdown-item" href="{{url_for('dashboard', filter_id='This Year')}}">This Year</a></li>
+                    <li><a class="dropdown-item" href="{{url_for('dashboard', filter_id='Last Year')}}">Last Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Churn Rate by State</h5>
+
+                  {% if filter_id == '': %}
+                  <p>This Year</p>
+                  {% else: %}
+                  <p>{{filter_id}}</p>
+                  {% endif %}
+
+                  <!-- Choropleth Chart -->
+                  <div id="teste" style="height: 500px;"></div>
+
+                  <script src="static/js/us_states.js"></script>
+
+                  <script type="text/javascript">
+
+                      const map = L.map('teste').setView([37.8, -96], 4);
+
+                      const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                          maxZoom: 19,
+                          attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                      }).addTo(map);
+
+                      // control that shows state info on hover
+                      const info = L.control();
+
+                      info.onAdd = function (map) {
+                          this._div = L.DomUtil.create('div', 'info');
+                          this.update();
+                          return this._div;
+                      };
+
+                      info.update = function (props) {
+                          const contents = props ? `<b>${props.name}</b><br />${Math.round(props.churn_rate * 100, 1)}% people / mi<sup>2</sup>` : 'Hover over a state';
+                          this._div.innerHTML = `<h4>Churn Rate by State</h4>${contents}`;
+                      };
+
+                      info.addTo(map);
+
+
+                      // get color depending on population density value
+                      function getColor(d) {
+                          return d > 0.6 ? '#004445' :
+                              d > 0.4 ? '#2C7873' :
+                              d > 0.3  ? '#6FB98F' :
+                              d > 0.2  ? '#C3F0CA' :
+                              d > 0.1   ? '#EAFBEA' : '#EAFBEA';
+                      }
+
+                      function style(feature) {
+                          return {
+                              weight: 2,
+                              opacity: 1,
+                              color: 'white',
+                              dashArray: '3',
+                              fillOpacity: 0.7,
+                              fillColor: getColor(feature.properties.churn_rate)
+                          };
+                      }
+
+                      function highlightFeature(e) {
+                          const layer = e.target;
+
+                          layer.setStyle({
+                              weight: 5,
+                              color: '#666',
+                              dashArray: '',
+                              fillOpacity: 0.7
+                          });
+
+                          layer.bringToFront();
+
+                          info.update(layer.feature.properties);
+                      }
+
+                      /* global statesData */
+                      const geojson = L.geoJson(statesData, {
+                          style,
+                          onEachFeature
+                      }).addTo(map);
+
+                      function resetHighlight(e) {
+                          geojson.resetStyle(e.target);
+                          info.update();
+                      }
+
+                      function zoomToFeature(e) {
+                          map.fitBounds(e.target.getBounds());
+                      }
+
+                      function onEachFeature(feature, layer) {
+                          layer.on({
+                              mouseover: highlightFeature,
+                              mouseout: resetHighlight,
+                              click: zoomToFeature
+                          });
+                      }
+
+
+
+                      const legend = L.control({position: 'bottomright'});
+
+                      legend.onAdd = function (map) {
+
+                          const div = L.DomUtil.create('div', 'info legend');
+                          const grades = [' 0 ', ' 10% ', ' 20% ', ' 30% ', ' 40% ', ' 60% '];
+                          const labels = [];
+                          let from, to;
+
+                          for (let i = 0; i < grades.length; i++) {
+                              from = grades[i];
+                              to = grades[i + 1];
+
+                              labels.push(`<i style="background:${getColor(from + 1)}"></i> ${from}${to ? `&ndash;${to}` : '+'}`);
+                          }
+
+                          div.innerHTML = labels.join('<br>');
+                          return div;
+                      };
+
+                      legend.addTo(map);
+
+                  </script>
+
+                  <!-- End Choropleth Map -->
+
+                </div>
+
+              </div>
+            </div><!-- End Reports -->
+
+            <!-- Churn by account length chart -->
+            <div class="col-12">
+              <div class="card recent-sales overflow-auto">
+
+                <div class="filter">
+                  <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+                  <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                    <li class="dropdown-header text-start">
+                      <h6>Filter</h6>
+                    </li>
+                    <li><a class="dropdown-item" href="{{url_for('dashboard', filter_id='This Year')}}">This Year</a></li>
+                    <li><a class="dropdown-item" href="{{url_for('dashboard', filter_id='Last Year')}}">Last Year</a></li>
+                  </ul>
+                </div>
+
+                <div class="card-body">
+                  <h5 class="card-title">Churn Rate by Account Length</h5>
+
+                  {% if filter_id == '': %}
+                  <p>This Year</p>
+                  {% else: %}
+                  <p>{{filter_id}}</p>
+                  {% endif %}
+
+                  <div id="lineChart"></div>
+
+
+              <script>
+                var options = {
+                  series: [{
+                    name: "Churn Rate",
+                    data: {{account_length_data}}
+                }],
+                  chart: {
+                  height: 350,
+                  type: 'area',
+                  zoom: {
+                    enabled: false
+                  }
+                },
+                dataLabels: {
+                  enabled: false
+                },
+                stroke: {
+                  curve: 'straight'
+                },
+                grid: {
+                  row: {
+                    colors: ['#f3f3f3', 'transparent'], // takes an array which will be repeated on columns
+                    opacity: 0.5
+                  },
+                },
+                colors: ['#009FBD'],
+                xaxis: {
+                   tickAmount: 20,
+                },
+               yaxis: {
+                  labels: {
+                    show: false
+                  }
+                },
+                };
+
+                var chart = new ApexCharts(document.querySelector("#lineChart"), options);
+                chart.render();
+
+             </script>
+
+                </div>
+
+              </div>
+            </div><!-- End Churn by account length chart -->
+
+
+
+          </div>
+        </div><!-- End Left side columns -->
+
+        <!-- Right side columns -->
+        <div class="col-lg-4">
+
+
+          <!-- Churn Rate by Region Chart -->
+          <div class="card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+                <li><a class="dropdown-item" href="{{url_for('dashboard', filter_id='This Year')}}">This Year</a></li>
+                <li><a class="dropdown-item" href="{{url_for('dashboard', filter_id='Last Year')}}">Last Year</a></li>
+              </ul>
+            </div>
+
+            <div class="card-body pb-0">
+              <h5 class="card-title">Churn Rate by Region</h5>
+
+              {% if filter_id == '': %}
+              <p>This Year</p>
+              {% else: %}
+              <p>{{filter_id}}</p>
+              {% endif %}
+
+              <div id="regionChart" style="min-height: 400px;" class="echart"></div>
+
+              <script>
+                  var options = {
+                        series: [{
+                        data: {{region_data}}
+                      }],
+                        chart: {
+                        type: 'bar',
+                        height: 380
+                      },
+                      plotOptions: {
+                        bar: {
+                          barHeight: '100%',
+                          distributed: true,
+                          horizontal: true,
+                          dataLabels: {
+                            position: 'bottom'
+                          },
+                        }
+                        },
+                        colors: ['#2155CD', '#0AA1DD', '#79DAE8', '#088395'
+                        ],
+                        dataLabels: {
+                          enabled: false,
+                          textAnchor: 'start',
+                          style: {
+                            colors: ['#fff']
+                          },
+                          offsetX: 0,
+                          dropShadow: {
+                            enabled: true
+                          }
+                        },
+                        stroke: {
+                          width: 1,
+                          colors: ['#fff']
+                        },
+                        xaxis: {
+                          categories: ['Northeast', 'Midwest', 'South', 'West'
+                          ],
+                        },
+                        yaxis: {
+                          labels: {
+                            show: false
+                          }
+                        },
+                        tooltip: {
+                          theme: 'dark',
+                          x: {
+                            show: false
+                          },
+                          y: {
+                            title: {
+                              formatter: function () {
+                                return ''
+                              }
+                            }
+                          }
+                        }
+                        };
+
+               var chart = new ApexCharts(document.querySelector("#regionChart"), options);
+
+              chart.render();
+              </script>
+            </div>
+          </div><!-- End Churn Rate by Region Chart -->
+
+          <!-- Churn Rate by Area Code Chart -->
+          <div class="card">
+            <div class="filter">
+              <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
+              <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <li class="dropdown-header text-start">
+                  <h6>Filter</h6>
+                </li>
+                <li><a class="dropdown-item" href="{{url_for('dashboard', filter_id='This Year')}}">This Year</a></li>
+                <li><a class="dropdown-item" href="{{url_for('dashboard', filter_id='Last Year')}}">Last Year</a></li>
+
+              </ul>
+            </div>
+
+            <div class="card-body pb-0">
+              <h5 class="card-title">Churn Rate by Area Code</h5>
+
+              {% if filter_id == '': %}
+              <p>This Year</p>
+              {% else: %}
+              <p>{{filter_id}}</p>
+              {% endif %}
+
+              <div id="myChart" >
+
+            </div>
+
+              <script>
+                  var options = {
+                        series: [{
+                        data: {{county_data}}
+                      }],
+                        chart: {
+                        type: 'bar',
+                        height: 380
+                      },
+                      plotOptions: {
+                        bar: {
+                          barHeight: '100%',
+                          distributed: true,
+                          horizontal: true,
+                          dataLabels: {
+                            position: 'bottom'
+                          },
+                        }
+                        },
+                        colors: ['#577D86', '#569DAA', '#87CBB9'
+                        ],
+                        dataLabels: {
+                          enabled: false,
+                          textAnchor: 'start',
+                          style: {
+                            colors: ['#fff']
+                          },
+                          offsetX: 0,
+                          dropShadow: {
+                            enabled: true
+                          }
+                        },
+                        stroke: {
+                          width: 1,
+                          colors: ['#fff']
+                        },
+                        xaxis: {
+                          categories: ['San Francisco Bay Area', 'Santa Clara County', 'East Bay Area'
+                          ],
+                        },
+                        yaxis: {
+                          labels: {
+                            show: false
+                          }
+                        },
+                        tooltip: {
+                          theme: 'dark',
+                          x: {
+                            show: false
+                          },
+                          y: {
+                            title: {
+                              formatter: function () {
+                                return ''
+                              }
+                            }
+                          }
+                        }
+                        };
+
+               var chart = new ApexCharts(document.querySelector("#myChart"), options);
+
+              chart.render();
+              </script>
+
+
+          </div><!-- End Churn Rate by Area Code Chart -->
+
+
+
+        </div><!-- End Right side columns -->
+
+      </div>
+    </section>
+
+  </main><!-- End #main -->
+  {% include 'footer.html' %}
+  <!-- ======= Footer ======= -->
+
+  <!-- End Footer -->
+
+
+{% endblock %}
+</body>
+
+</html>

@@ -1,0 +1,175 @@
+<!-- ======= Header ======= -->
+{% extends 'header.html' %}
+<!-- End Sidebar-->
+{% block title %}Contact{% endblock %}
+
+
+
+<body>
+{% block content %}
+  <main id="main" class="main">
+
+    <div class="pagetitle">
+      <h1>Contact</h1>
+      <nav>
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{url_for('dashboard')}}">Home</a></li>
+          <li class="breadcrumb-item active">Contact</li>
+        </ol>
+      </nav>
+    </div><!-- End Page Title -->
+
+    <section class="section contact">
+
+      <div class="row gy-4">
+
+        <div class="col-xl-6">
+
+          <div class="row">
+            <div class="col-lg-6">
+              <div class="info-box card">
+                <i class="bi bi-geo-alt"></i>
+                <h3>Address</h3>
+                <p>Your company address</p>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="info-box card">
+                <i class="bi bi-telephone"></i>
+                <h3>Call Us</h3>
+                <p>+1 5589 55488 55<br>+1 6678 254445 41</p>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="info-box card">
+                <i class="bi bi-envelope"></i>
+                <h3>Email Us</h3>
+                <p>info@example.com<br>contact@example.com</p>
+              </div>
+            </div>
+            <div class="col-lg-6">
+              <div class="info-box card">
+                <i class="bi bi-clock"></i>
+                <h3>Open Hours</h3>
+                <p>Monday - Friday<br>9:00AM - 05:00PM</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-6">
+          <div class="card p-4">
+
+            <form id="contactForm" action="{{ url_for('get_contact_page') }}" method="post">
+              {{ form.csrf_token }}
+              <div class="row gy-4">
+                <div class="col-md-6">
+                  <input type="text" name="name" class="form-control" placeholder="Your Name" required>
+                  {% if form.name.errors %}
+                  <ul class="errors">
+                      {% for error in form.name.errors %}
+                      <li>{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                  {% endif %}
+                </div>
+
+                <div class="col-md-6 ">
+                  <input type="email" class="form-control" name="email" placeholder="Your Email" required>
+                  {% if form.email.errors %}
+                  <ul class="errors">
+                      {% for error in form.email.errors %}
+                      <li>{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                  {% endif %}
+                </div>
+
+                <div class="col-md-12">
+                  <input type="text" class="form-control" name="subject" placeholder="Subject"  required>
+                  {% if form.subject.errors %}
+                  <ul class="errors">
+                      {% for error in form.subject.errors %}
+                      <li>{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                  {% endif %}
+                </div>
+
+                <div class="col-md-12">
+                  <textarea class="form-control" name="message" rows="6" placeholder="Message"  required></textarea>
+                  {% if form.message.errors %}
+                  <ul class="errors">
+                      {% for error in form.message.errors %}
+                      <li>{{ error }}</li>
+                      {% endfor %}
+                  </ul>
+                  {% endif %}
+                </div>
+
+                <div class="col-md-12 text-center">
+                  </div>
+                    <button type="submit" class="btn btn-primary" name="submit">Send Message</button>
+                </div>
+
+            </form>
+
+            <script>
+              function clearForm() {
+                document.getElementById('contactForm').reset();
+              }
+            </script>
+
+            <script>
+            var form = document.getElementById('contactForm');
+            form.addEventListener('submit', function(event) {
+              event.preventDefault();
+              var xhr = new XMLHttpRequest();
+              xhr.open('POST', '{{ url_for('get_contact_page') }}', true);
+              xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+              xhr.onload = function() {
+                if (xhr.status === 200) {
+                  clearForm(); // call the function to clear the form fields
+                  alert('Your message has been sent. Thank you!');
+                } else {
+                  alert('There was an error submitting your message. Please try again.');
+                }
+              };
+              xhr.send(new FormData(form));
+            });
+          </script>
+          <script>
+            ClassicEditor
+              .create( document.querySelector( '#editor' ), {
+                ckfinder: {
+                  uploadUrl: '/upload-images'
+                }
+              } )
+              .then( editor => {
+                console.log( editor );
+              } )
+              .catch( error => {
+                console.error( error );
+              } );
+          </script>
+
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main><!-- End #main -->
+
+  <!-- ======= Footer ======= -->
+  {% include 'footer.html' %}
+
+  <!-- End Footer -->
+
+{% endblock %}
+</body>
+
+
+</html>
