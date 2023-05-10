@@ -3,7 +3,7 @@ import os
 import smtplib
 
 import pandas as pd
-from sqlalchemy import literal_column
+from sqlalchemy import literal_column, cast, Float, String
 from werkzeug.security import check_password_hash
 
 from application.forms import ContactForm, LoginForm
@@ -18,8 +18,8 @@ load_dotenv()
 
 
 def get_churn_rate_by_location(db, location, churn_col, table):
-    results = db.session.query(getattr(table, location),
-                               db.func.sum(getattr(table, churn_col)) * 1.0 / db.func.count('*').label('churn_rate')) \
+    results = db.session.query(cast(getattr(table, location), String()),
+                               db.func.sum(cast(getattr(table, churn_col), Float())) * 1.0 / db.func.count('*').label('churn_rate')) \
         .group_by(getattr(table, location)) \
         .all()
 
@@ -54,8 +54,10 @@ def handle_bad_request(error):
 @app.route('/', methods=['GET', 'POST'])
 def login():
     login_form = LoginForm()
+    print(login_form.data)
     if login_form.validate_on_submit():
         data = login_form.data
+        print(login_form.data)
         user = Users.query.filter_by(email=data['email']).first()
         if user and check_password_hash(user.password, data['password']):
             remember = data.get('remember_me')
@@ -65,6 +67,7 @@ def login():
             flash('Incorrect email or password')
             return redirect(url_for('login'))
     return render_template("pages-login.html", form=login_form)
+
 
 @app.route('/dashboard', methods=['GET', 'POST'])
 @login_required
@@ -80,17 +83,17 @@ def dashboard():
         table = ChurnDataPrep
 
     # ****************************Calculate Statistics**************************************
-    risky_customers = db.session.query(db.func.sum(getattr(table, churn_col))).scalar()
+    risky_customers = db.session.query(db.func.sum(cast(getattr(table, churn_col), Float()))).scalar()
 
     monthly_income_risky_customers = db.session.query(
         db.func.sum(
-            (table.total_day_charge + table.total_eve_charge + table.total_night_charge) / (
-                    table.account_length + literal_column('0.0')) * 30 *
-            db.func.ifnull(getattr(table, churn_col), 0)
+            (cast(table.total_day_charge, Float())+ cast(table.total_eve_charge, Float()) + cast(table.total_night_charge, Float())) / (
+                    cast(table.account_length, Float()) + literal_column('0.0')) * 30 *
+            db.func.coalesce(cast(getattr(table, churn_col), Float()), 0)
         )
-    ).filter(getattr(table, churn_col) == 1).scalar()
+    ).filter(cast(getattr(table, churn_col), Float()) == 1).scalar()
 
-    total_customers = db.session.query(db.func.count(getattr(table, churn_col))).scalar()
+    total_customers = db.session.query(db.func.count(cast(getattr(table, churn_col), Float()))).scalar()
     retention_rate = (total_customers - risky_customers) / total_customers
 
     statistics = {'Risky Customers': risky_customers,
@@ -101,7 +104,7 @@ def dashboard():
 
     # ****************************Churn By Account Length Data Plot*****************************
     churn_by_acct_length = db.session.query(table.account_length,
-                                            db.func.sum(getattr(table, churn_col)) * 1.0 / db.func.count(
+                                            db.func.sum(cast(getattr(table, churn_col), Float())) * 1.0 / db.func.count(
                                                 '*').label('churn_rate')) \
         .group_by(table.account_length) \
         .all()
@@ -119,6 +122,7 @@ def dashboard():
 
     # creating a state indexed version of the dataframe so we can lookup values
     state_data_indexed = state_data.set_index('state')
+    print(type(state_data['churn_rate'][0]))
 
     with open('application/us_state_test.json', 'r') as f:
         content = json.load(f)
@@ -127,6 +131,8 @@ def dashboard():
     # and assigning a value from our dataframe
     for s in content['features']:
         s['properties']['churn_rate'] = state_data_indexed.loc[s['id'], 'churn_rate']
+
+    print(content)
 
     json_string = json.dumps(content)
 

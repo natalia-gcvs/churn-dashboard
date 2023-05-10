@@ -20,10 +20,11 @@ bootstrap = Bootstrap(app)
 
 # Database
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
-# postgres://customer_data_ew3h_user:RYa4u5SB947QlTxcdInbziDk2MguQnLn@dpg-chdqfsrhp8u3v73m50f0-a.oregon-postgres.render.com/customer_data_ew3h
+print(os.environ.get('DATABASE_URL'))
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
+
 
 # Login Manager
 login_manager = LoginManager()
