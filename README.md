@@ -34,37 +34,56 @@
   </ol>
   
 <h2>1. Entendimento do Negócio</h2> 
-  <ul>
-    <li><p><b>Objetivo do projeto:</b> Entender claramente o objetivo do projeto, que neste caso é identificar antecipadamente os clientes com maior probabilidade de cancelar os serviços da empresa de telecomunicações (churn), a fim de tomar medidas proativas para mantê-los satisfeitos e evitar perdas de negócios.</p></li>
-    <li><p><b>Contexto do negócio:</b> Compreender o contexto em que o projeto está inserido, incluindo a situação competitiva do mercado, os tipos de serviços oferecidos, as políticas de preços, os canais de atendimento e a percepção dos clientes sobre a empresa. 
-<em>No entanto, uma das limitações deste projeto é que a fonte de dados disponível é o Kaggle e a empresa é anônima, o que restringe nossa capacidade de aprofundar a análise do contexto de negócios.</em></p></li>
-    <li><p><b>Fontes de dados:</b> Identificar as fontes de dados disponíveis para o projeto, que podem incluir dados de faturamento, perfil dos clientes, histórico de uso dos serviços, informações sobre reclamações e cancelamentos de serviço, entre outros. Asim como na etapa anterior estamos limitadas as variáveis contidas no dataset, cuja fonte é o Kaggle</p></li>
-    <li><p><b>Variáveis de interesse:</b> Selecionar as variáveis mais relevantes para o problema de churn, como por exemplo, tempo de contrato, valor do faturamento, tipo de serviço contratado, frequência de uso, histórico de cancelamento, entre outros.</p></li>
-    <li><p><b>Stakeholders:</b> Identificar as partes interessadas no projeto, incluindo a equipe de marketing, a equipe de atendimento ao cliente, a equipe de vendas e os próprios clientes, a fim de entender como os resultados do projeto podem impactar esses stakeholders. Essa etapa também não é possível de ser realizada dada a fonte de dados</p></li>
-    <li><p><b>Métricas de sucesso:</b> Definir as métricas de sucesso para o projeto. Para lidar com dados desbalanceados, que é o caso, é importante escolher uma métrica de sucesso adequada que leve em consideração a classe minoritária, como a recall e a precision. Como nosso objetivo é identificar corretamente todos os casos de churn, mesmo que isso resulte em alguns falsos positivos, a recall é a métrica mais importante. Isso ocorre porque é mais prejudicial perder um cliente do que investir em um que não deixaria a empresa. No entanto, é importante lembrar que essa decisão depende do contexto do negócio e da capacidade financeira da empresa para lidar com os investimentos necessários.</p></li>
-  </ul>
+  <dl>
+<dl>
+  <dt>1.1. Objetivo do projeto:</dt> 
+  <dd><b>Objetivo: </b>Entender claramente o objetivo do projeto, que neste caso é identificar antecipadamente os clientes com maior probabilidade de cancelar os serviços da empresa de telecomunicações (churn), a fim de tomar medidas proativas para mantê-los satisfeitos e evitar perdas de negócios.</dd>
+  
+  <dt>1.2. Contexto do negócio:</dt> 
+  <dd><b>Objetivo: </b>Compreender o contexto em que o projeto está inserido, incluindo a situação competitiva do mercado, os tipos de serviços oferecidos, as políticas de preços, os canais de atendimento e a percepção dos clientes sobre a empresa. No entanto, uma das limitações deste projeto é que a fonte de dados disponível é o Kaggle e a empresa é anônima, o que restringe nossa capacidade de aprofundar a análise do contexto de negócios.</dd>
+  
+  <dt>1.3. Fontes de dados:</dt> 
+  <dd><b>Objetivo: </b>Identificar as fontes de dados disponíveis para o projeto, que podem incluir dados de faturamento, perfil dos clientes, histórico de uso dos serviços, informações sobre reclamações e cancelamentos de serviço, entre outros. Assim como na etapa anterior, estamos limitados às variáveis contidas no dataset, cuja fonte é o Kaggle.</dd>
+  
+  <dt>1.4. Variáveis de interesse:</dt> 
+  <dd><b>Objetivo: </b>Selecionar as variáveis mais relevantes para o problema de churn, como por exemplo, tempo de contrato, valor do faturamento, tipo de serviço contratado, frequência de uso, histórico de cancelamento, entre outros.</dd>
+  
+  <dt>1.5. Stakeholders:</dt> 
+  <dd><b>Objetivo: </b>Identificar as partes interessadas no projeto, incluindo a equipe de marketing, a equipe de atendimento ao cliente, a equipe de vendas e os próprios clientes, a fim de entender como os resultados do projeto podem impactar esses stakeholders. Essa etapa também não é possível de ser realizada dada a fonte de dados.</dd>
+  
+  <dt>1.6. Métricas de sucesso:</dt> 
+  <dd><b>Objetivo: </b>Definir as métricas de sucesso para o projeto. Para lidar com dados desbalanceados, que é o caso, é importante escolher uma métrica de sucesso adequada que leve em consideração a classe minoritária, como a recall e a precision. Como nosso objetivo é identificar corretamente todos os casos de churn, mesmo que isso resulte em alguns falsos positivos, a recall é a métrica mais importante. Isso ocorre porque é mais prejudicial perder um cliente do que investir em um que não deixaria a empresa. No entanto, é importante lembrar que essa decisão depende do contexto do negócio e da capacidade financeira da empresa para lidar com os investimentos necessários.</dd>
+</dl>
+
   
   <h2>2. Entendimento dos dados</h2>
   
   <dl>
-    <dt>2.1. Coleta de dados:</dt>
-    <dd><b>Objetivo:</b> Identificar as fontes de dados relevantes para o projeto e coletar os dados necessários.
-      <dd>Essa etapa se resume ao download do dataset no 
-      <a href="https://www.kaggle.com/datasets/arashnic/telecom-churn-dataset">Kaggle</a></dd>
+<dt>2.1. Coleta de dados:</dt>
+<dd><b>Objetivo:</b> Identificar as fontes de dados relevantes para o projeto e coletar os dados necessários.
+  <dd>Essa etapa se resume ao download do dataset no 
+  <a href="https://www.kaggle.com/datasets/arashnic/telecom-churn-dataset">Kaggle</a></dd>
  
-  
 <dt>2.2. Descrição dos dados:</dt>
-<dd><b>Objetivo:</b> Descrever os dados para entender melhor suas características, como tamanho, tipo de dados, distribuição, presença de missing values ou outliers.</dd>
-<dd>O dataset possui 4250 entradas, das quais:</dd>
-<dd>- Somente 14% dos dados representam a classe de clientes que cancelaram o serviço.</dd>
-<dd>- O dataset não possui missing values.</dd>
-<dd>- Para lidar com outliers, utilizamos uma técnica de imputação, uma vez que eles eram poucos. Não poderíamos simplesmente excluí-los, já que estamos trabalhando com um dataset pequeno e não queremos perder informações relevantes. Além disso, verificamos que as entradas com outliers são válidas. Utilizamos a técnica de <a href="https://www.statisticshowto.com/winsorize/">Winsorization</a> para lidar com esses outliers, que consiste em recortar os valores discrepantes para os percentis mínimo e máximo.</dd>
-
-  
-
+    <dd><b>Objetivo:</b> Descrever os dados para entender melhor suas características, como tamanho, tipo de dados, distribuição, presença de missing values ou outliers.</dd>
+    <dd>O dataset possui 4250 entradas, das quais:</dd>
+    <dd>- Somente 14% dos dados representam a classe de clientes que cancelaram o serviço.</dd>
+    <dd>- O dataset não possui missing values.</dd>
+    <dd>- Para lidar com outliers, utilizamos uma técnica de imputação, uma vez que eles eram poucos. Não poderíamos simplesmente excluí-los, já que estamos trabalhando com um dataset pequeno e não queremos perder informações relevantes. Além disso, verificamos que as entradas com outliers são válidas. Utilizamos a técnica de <a href="https://www.statisticshowto.com/winsorize/">Winsorization</a> para lidar com esses outliers, que consiste em recortar os valores discrepantes para os percentis mínimo e máximo.</dd>
 
 <dt>2.5. Análise exploratória:</dt> 
     <dd><b>Objetivo:</b>Realizar uma análise exploratória dos dados para entender melhor a estrutura dos dados e como as variáveis estão relacionadas.</dd>
+     <dd>Métodos</dd>
+      
+      <ol>
+          <li><p>Hipótese 1: Clientes com tempo de conta mais longo têm menos probabilidade de churn. Isso ocorre porque clientes que estão com a empresa há mais tempo podem estar mais satisfeitos com o serviço e ter estabelecido uma lealdade à empresa.</p></li>
+         <li><p>Hipótese 2: Clientes com um plano internacional têm menos probabilidade de churn. Isso ocorre porque clientes que possuem um plano internacional podem ter uma necessidade maior pelos serviços da empresa e podem ser menos propensos a mudar para um concorrente.</p></li>
+          <li><p>Hipótese 3: Clientes com um plano de caixa postal e um número maior de mensagens de caixa postal têm menos probabilidade de churn. Isso ocorre porque clientes que usam a caixa postal podem ter um maior engajamento com os serviços da empresa e podem ser mais propensos a permanecer com a empresa.</p></li>
+          <li><p>Hipótese 4: Clientes que fazem mais chamadas para o serviço de atendimento ao cliente são mais propensos a churn. Isso ocorre porque clientes que precisam fazer várias chamadas para o serviço de atendimento ao cliente podem ter tido uma experiência negativa com o serviço da empresa e podem ser mais propensos a mudar para um concorrente.</p></li>
+          <li><p>Hipótese 5: Clientes que usam o serviço com mais frequência durante o dia, à noite e à noite têm menos probabilidade de churn. Isso ocorre porque clientes que usam o serviço com mais frequência podem ter uma necessidade maior pelos serviços da empresa e podem ser menos propensos a mudar para um concorrente.</p></li>
+          <li><p>Hipótese 6: Clientes que são cobrados mais por suas chamadas, tanto durante o dia quanto à noite, são mais propensos a churn. Isso ocorre porque clientes que são cobrados mais podem estar insatisfeitos com a política de preços da empresa e podem ser mais propensos a mudar para um concorrente.</p></li>
+          <li><p>Hipótese 7: Clientes podem churn se mudarem para uma área onde seu serviço de telecomunicações atual não está disponível.</p></li>
+      </ol>
 
 <dt>2.6. Seleção de variáveis:</dt> 
   <dd>Selecionar as variáveis mais relevantes para o problema de churn, levando em consideração a correlação com a variável de interesse, a redundância entre as variáveis e a facilidade de obtenção dos dados.</dd>
