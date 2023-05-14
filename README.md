@@ -66,30 +66,66 @@
  
 <dt>2.2. Descrição dos dados:</dt>
     <dd><b>Objetivo:</b> Descrever os dados para entender melhor suas características, como tamanho, tipo de dados, distribuição, presença de missing values ou outliers.</dd>
-    <dd>O dataset possui 4250 entradas, das quais:</dd>
-    <dd>- Somente 14% dos dados representam a classe de clientes que cancelaram o serviço.</dd>
-    <dd>- O dataset não possui missing values.</dd>
-    <dd>- Para lidar com outliers, utilizamos uma técnica de imputação, uma vez que eles eram poucos. Não poderíamos simplesmente excluí-los, já que estamos trabalhando com um dataset pequeno e não queremos perder informações relevantes. Além disso, verificamos que as entradas com outliers são válidas. Utilizamos a técnica de <a href="https://www.statisticshowto.com/winsorize/">Winsorization</a> para lidar com esses outliers, que consiste em recortar os valores discrepantes para os percentis mínimo e máximo.</dd>
+    <dd>Dataset Variables:</dd>
+    <ol>
+    <li>state: The state where the customer resides (string).</li>
+    <li>account_length: The number of days the customer has had an active account (integer).</li>
+    <li>area_code: The three-digit area code for the customer's phone number (string).</li>
+    <li>international_plan: Whether the customer has an international plan or not (string, "yes" or "no").</li>
+    <li>voice_mail_plan: Whether the customer has a voicemail plan or not (string, "yes" or "no").</li>
+    <li>number_vmail_messages: The number of voicemail messages the customer has (integer).</li>
+    <li>total_day_minutes: The total number of minutes the customer used during the day (float).</li>
+    <li>total_day_calls: The total number of calls the customer made during the day (integer).</li>
+    <li>total_day_charge: The total charge for the day calls (float).</li>
+    <li>total_eve_minutes: The total number of minutes the customer used during the evening (float).</li>
+    <li>total_eve_calls: The total number of calls the customer made during the evening (integer).</li>
+    <li>total_eve_charge: The total charge for the evening calls (float).</li>
+    <li>total_night_minutes: The total number of minutes the customer used during the night (float).</li>
+    <li>total_night_calls: The total number of calls the customer made during the night (integer).</li>
+    <li>total_night_charge: The total charge for the night calls (float).</li>
+    <li>total_intl_minutes: The total number of international minutes the customer used (float).</li>
+    <li>total_intl_calls: The total number of international calls the customer made (integer).</li>
+    <li>total_intl_charge: The total international charge (float).</li>
+    <li>number_customer_service_calls: The number of customer service calls the customer made (integer).</li>
+    <li>churn: Whether the customer churned or not (string, "yes" or "no").</li>
+    </ol>
+      
+<dd>O dataset possui 4250 entradas, das quais:</dd>
+<dd>- Somente 14% dos dados representam a classe de clientes que cancelaram o serviço.</dd>
+<dd>- O dataset não possui missing values.</dd>
+<dd>- Para lidar com outliers, utilizamos uma técnica de imputação, uma vez que eles eram poucos. Não poderíamos simplesmente excluí-los, já que estamos trabalhando com um dataset pequeno e não queremos perder informações relevantes. Além disso, verificamos que as entradas com outliers são válidas. Utilizamos a técnica de <a href="https://www.statisticshowto.com/winsorize/">Winsorization</a> para lidar com esses outliers, que consiste em recortar os valores discrepantes para os percentis mínimo e máximo.</dd>
 
 <dt>2.5. Análise exploratória:</dt> 
     <dd><b>Objetivo:</b>Realizar uma análise exploratória dos dados para entender melhor a estrutura dos dados e como as variáveis estão relacionadas.</dd>
-     <dd>Métodos</dd>
+     <dd><b>Métodos</b></dd>
+      <dd>Análise Univariada</dd>
+      <ul>
+          <li>Variável Target</li>
+          <li>Variáveis Númericas</li>
+          <li>Variáveis Categóricas</li>
+      </ul>
+      <dd>Análise Bivariada</dd>
+      <p> Para a Análise Bivariada seguimos a seguinte hipóteses:</p>
       
-      <ol>
-          <li><p>Hipótese 1: Clientes com tempo de conta mais longo têm menos probabilidade de churn. Isso ocorre porque clientes que estão com a empresa há mais tempo podem estar mais satisfeitos com o serviço e ter estabelecido uma lealdade à empresa.</p></li>
-         <li><p>Hipótese 2: Clientes com um plano internacional têm menos probabilidade de churn. Isso ocorre porque clientes que possuem um plano internacional podem ter uma necessidade maior pelos serviços da empresa e podem ser menos propensos a mudar para um concorrente.</p></li>
-          <li><p>Hipótese 3: Clientes com um plano de caixa postal e um número maior de mensagens de caixa postal têm menos probabilidade de churn. Isso ocorre porque clientes que usam a caixa postal podem ter um maior engajamento com os serviços da empresa e podem ser mais propensos a permanecer com a empresa.</p></li>
-          <li><p>Hipótese 4: Clientes que fazem mais chamadas para o serviço de atendimento ao cliente são mais propensos a churn. Isso ocorre porque clientes que precisam fazer várias chamadas para o serviço de atendimento ao cliente podem ter tido uma experiência negativa com o serviço da empresa e podem ser mais propensos a mudar para um concorrente.</p></li>
-          <li><p>Hipótese 5: Clientes que usam o serviço com mais frequência durante o dia, à noite e à noite têm menos probabilidade de churn. Isso ocorre porque clientes que usam o serviço com mais frequência podem ter uma necessidade maior pelos serviços da empresa e podem ser menos propensos a mudar para um concorrente.</p></li>
-          <li><p>Hipótese 6: Clientes que são cobrados mais por suas chamadas, tanto durante o dia quanto à noite, são mais propensos a churn. Isso ocorre porque clientes que são cobrados mais podem estar insatisfeitos com a política de preços da empresa e podem ser mais propensos a mudar para um concorrente.</p></li>
-          <li><p>Hipótese 7: Clientes podem churn se mudarem para uma área onde seu serviço de telecomunicações atual não está disponível.</p></li>
-      </ol>
+<ul>
+<li><p>Hipótese 1: Clientes com tempo de conta mais longo têm menos probabilidade de churn. Isso ocorre porque clientes que estão com a empresa há mais tempo podem estar mais satisfeitos com o serviço e ter estabelecido uma lealdade à empresa.</p></li>
+    
+    
+    
+<li><p>Hipótese 2: Clientes com um plano internacional têm menos probabilidade de churn. Isso ocorre porque clientes que possuem um plano internacional podem ter uma necessidade maior pelos serviços da empresa e podem ser menos propensos a mudar para um concorrente.</p></li>
+<li><p>Hipótese 3: Clientes com um plano de caixa postal e um número maior de mensagens de caixa postal têm menos probabilidade de churn. Isso ocorre porque clientes que usam a caixa postal podem ter um maior engajamento com os serviços da empresa e podem ser mais propensos a permanecer com a empresa.</p></li>
+<li><p>Hipótese 4: Clientes que fazem mais chamadas para o serviço de atendimento ao cliente são mais propensos a churn. Isso ocorre porque clientes que precisam fazer várias chamadas para o serviço de atendimento ao cliente podem ter tido uma experiência negativa com o serviço da empresa e podem ser mais propensos a mudar para um concorrente.</p></li>
+<li><p>Hipótese 5: Clientes que usam o serviço com mais frequência durante o dia, à noite e à noite têm menos probabilidade de churn. Isso ocorre porque clientes que usam o serviço com mais frequência podem ter uma necessidade maior pelos serviços da empresa e podem ser menos propensos a mudar para um concorrente.</p></li>
+<li><p>Hipótese 6: Clientes que são cobrados mais por suas chamadas, tanto durante o dia quanto à noite, são mais propensos a churn. Isso ocorre porque clientes que são cobrados mais podem estar insatisfeitos com a política de preços da empresa e podem ser mais propensos a mudar para um concorrente.</p></li>
+<li><p>Hipótese 7: Clientes podem churn se mudarem para uma área onde seu serviço de telecomunicações atual não está disponível.</p></li>
+</ul>
 
 <dt>2.6. Seleção de variáveis:</dt> 
-  <dd>Selecionar as variáveis mais relevantes para o problema de churn, levando em consideração a correlação com a variável de interesse, a redundância entre as variáveis e a facilidade de obtenção dos dados.</dd>
+      <dd><b>Objetivo: </b>Selecionar as variáveis mais relevantes para o problema de churn, levando em consideração a correlação com a variável de interesse, a redundância entre as variáveis e a facilidade de obtenção dos dados.</dd>
 
 <dt>2.7. Identificação de dados sensíveis:</dt> 
-  <dd>Identificar se existem dados sensíveis que precisam ser tratados de forma especial para garantir a privacidade e a segurança dos clientes. Não é uma questão relevante para esse projeto.</dd>
+  <dd><b>Objetivo: </b>Identificar se existem dados sensíveis que precisam ser tratados de forma especial para garantir a privacidade e a segurança dos clientes.</dd> 
+      <dd>Não há dados sensíveis nesse projeto.</dd>
 
 <dt>2.8. Preparação dos dados:</dt>
   <dd>Preparar os dados para a próxima etapa, que envolve a construção dos modelos de predição de churn. Isso pode incluir a normalização dos dados, a transformação de variáveis, a criação de variáveis derivadas e a divisão dos dados em conjuntos de treinamento e teste.</dd>
