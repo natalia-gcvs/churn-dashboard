@@ -24,16 +24,16 @@
   <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/CRISP-DM_Process_Diagram.png/319px-CRISP-DM_Process_Diagram.png">
   
   <ol dir="auto">
-<li><a href="#business-problem">Entendimento do negócio</a></li>
-<li><a href="#data-source">Entendimento dos dados</a></li>
-<li><a href="#methods">Preparação dos dados</a></li>
-<li><a href="#tech-stack">Modelagem</a></li>
-<li><a href="#quick-glance-at-the-results">Avaliação do modelo</a></li>
-<li><a href="#lessons-learned-and-recommendation">Implantação/Deployment</a></li>
-<li><a href="#limitation-and-what-can-be-improved">Limitações e pontos a serem melhorados</a></li>
+<li><a href="#entendimento-do-negocio">Entendimento do negócio</a></li>
+<li><a href="#entendimento-dos-dados">Entendimento dos dados</a></li>
+<li><a href="#preparacao-dos-dados">Preparação dos dados</a></li>
+<li><a href="#modelagem">Modelagem</a></li>
+<li><a href="#avaliacao-do-modelo">Avaliação do modelo</a></li>
+<li><a href="#deployment">Implantação/Deployment</a></li>
+<li><a href="#limitacoes">Limitações e pontos a serem melhorados</a></li>
   </ol>
   
-<h2>1. Entendimento do Negócio</h2> 
+<h2 id="entendimento-do-negocio"> 1. Entendimento do Negócio</h2> 
   <dl>
 <dl>
   <dt>1.1. Objetivo do projeto:</dt> 
@@ -56,7 +56,7 @@
 </dl>
 
   
-  <h2>2. Entendimento dos dados</h2>
+  <h2 id="entendimento-dos-dados">2. Entendimento dos dados</h2>
   
   <dl>
 <dt>2.1. Coleta de dados:</dt>
@@ -94,41 +94,127 @@
 <dd>- Somente 14% dos dados representam a classe de clientes que cancelaram o serviço.</dd>
 <dd>- O dataset não possui missing values.</dd>
 <dd>- Para lidar com outliers, utilizamos uma técnica de imputação, uma vez que eles eram poucos. Não poderíamos simplesmente excluí-los, já que estamos trabalhando com um dataset pequeno e não queremos perder informações relevantes. Além disso, verificamos que as entradas com outliers são válidas. Utilizamos a técnica de <a href="https://www.statisticshowto.com/winsorize/">Winsorization</a> para lidar com esses outliers, que consiste em recortar os valores discrepantes para os percentis mínimo e máximo.</dd>
+      
+<dt>2.5. Identificação de dados sensíveis:</dt> 
+  <dd><b>Objetivo: </b>Identificar se existem dados sensíveis que precisam ser tratados de forma especial para garantir a privacidade e a segurança dos clientes.</dd> 
+      <dd>Não há dados sensíveis nesse projeto.</dd>
 
-<dt>2.5. Análise exploratória:</dt> 
+<dt>2.6. Análise exploratória:</dt> 
     <dd><b>Objetivo:</b>Realizar uma análise exploratória dos dados para entender melhor a estrutura dos dados e como as variáveis estão relacionadas.</dd>
      <dd><b>Métodos</b></dd>
-      <dd>Análise Univariada</dd>
+     <dd><b>Análise Univariada</b></dd>
       <ul>
-          <li>Variável Target</li>
-          <li>Variáveis Númericas</li>
-          <li>Variáveis Categóricas</li>
+         <li>Variável Target</li>
+          <p></p>
+         <img src="churn_project_pictures/target_variable_distribution.png" width="50%" height="400px">
+          <p></p>
+          <p>A analise univariada da distribuicao da variavel target demontrou um desbalanco entres as duas clasess, mais precisamente 86% dos dados sao relativos a cliente que deixaram a empresa enquanto que 14% sao de clientes que nao deixaram.</p>
+<p>Além disso, esse desequilíbrio na distribuição das classes indica que a classe de clientes que deixaram a empresa é significativamente maior em comparação com a classe de clientes que permaneceram, o que pode apresentar desafios na construção de modelos de previsão precisos e na obtenção de resultados balanceados.</p>
+         <li>Variáveis Númericas</li>
+          <p></p>
+         <img src="churn_project_pictures/numeric_data_distributions.png" width="100%" height="400px">
+          <p>A distribuição da maioria das variáveis se assemelha a uma distribuição normal, com exceção das variáveis binárias "total_intl_calls" e "number_customer_service_calls". Estas duas variáveis apresentam uma distribuição discreta ou com valores extremos, o que pode indicar um padrão de comportamento distinto em relação às demais variáveis contínuas.</p>
+          <p></p>
+         <li>Variáveis Categóricas</li>
+          <p></p>
+         <img src="churn_project_pictures/data_distribution_by_state.png" width="100%" height="400px">
+          <p></p>
+         <img src="churn_project_pictures/data_distribution_by_region_and_code_area.png" width="100%" height="400px">
+          <p></p>
+          <p>O estado com o maior número de entradas é West Virginia, enquanto o estado com o menor número de entradas é a Califórnia. Os demais estados possuem aproximadamente a mesma quantidade de entradas.</p><p>No que diz respeito à distribuição das classes dentro da variável "região", ela é equilibrada, o que significa que as classes estão relativamente balanceadas em termos de quantidade.</p><p>Por outro lado, é possível observar um desbalanceamento de classes na variável "county", onde a área da Baía de São Francisco possui o dobro de entradas em comparação com as outras duas áreas.</p><p>É importante destacar que o desbalanceamento das classes pode resultar no modelo aprendendo a priorizar as classes mais prevalentes durante o treinamento. Isso pode levar a um problema de generalização, onde o modelo pode não se sair bem ao fazer previsões para estados com menos entradas disponíveis.</p>
       </ul>
-      <dd>Análise Bivariada</dd>
+      <dd><b>Análise Bivariada</b></dd>
       <p> Para a Análise Bivariada seguimos a seguinte hipóteses:</p>
       
 <ul>
 <li><p>Hipótese 1: Clientes com tempo de conta mais longo têm menos probabilidade de churn. Isso ocorre porque clientes que estão com a empresa há mais tempo podem estar mais satisfeitos com o serviço e ter estabelecido uma lealdade à empresa.</p></li>
     
+<img src="churn_project_pictures/churn_rate_by_acc_lengthpng.png" width="100%" height="400px">
     
-    
+<p>O gráfico não fornece conclusões definitivas, mas é possível observar uma taxa de churn mais alta para clientes que estão com a empresa entre 50 e 150 dias. Para confirmar essa suspeita, calculamos o coeficiente ponto bisserial, o t-value, e concluímos que podemos afirmar com 95% de confiança que há uma correlação positiva entre as duas variáveis. No entanto, é importante ressaltar que a magnitude dessa correlação é muito fraca.</p><p>Portanto, embora exista uma relação estatisticamente significativa entre o tempo de permanência do cliente e a taxa de churn, essa correlação é relativamente fraca. Isso significa que outros fatores podem ter uma influência maior no comportamento de churn dos clientes, e é importante considerar esses fatores adicionais ao desenvolver estratégias de retenção de clientes.</p>
+
 <li><p>Hipótese 2: Clientes com um plano internacional têm menos probabilidade de churn. Isso ocorre porque clientes que possuem um plano internacional podem ter uma necessidade maior pelos serviços da empresa e podem ser menos propensos a mudar para um concorrente.</p></li>
+    
+<img src="churn_project_pictures/churn_rate_intl_plan.png" width="60%" height="400px">
+    
+<p>O gráfico revelou uma tendência oposta à hipótese 2, demonstrando que os clientes com plano internacional têm uma maior propensão a deixar a empresa, uma vez que a taxa de rotatividade é quatro vezes maior para esse grupo.</p>
+    
 <li><p>Hipótese 3: Clientes com um plano de caixa postal e um número maior de mensagens de caixa postal têm menos probabilidade de churn. Isso ocorre porque clientes que usam a caixa postal podem ter um maior engajamento com os serviços da empresa e podem ser mais propensos a permanecer com a empresa.</p></li>
+    
+<img src="churn_project_pictures/churn_voice_mail_plan.png" width="100%" height="400px">
+    
+<p>A taxa de rotatividade (churn) para clientes com um plano de caixa postal é de 0,074, o que é menor do que a taxa de rotatividade para clientes sem um plano de caixa postal (0,164). Isso sugere que ter um plano de caixa postal pode estar associado a taxas de rotatividade mais baixas.</p><p>Além disso, a média de mensagens de caixa postal para os clientes que cancelaram é de 4,358, o que é menor do que a média de mensagens de caixa postal para os clientes que não cancelaram (8,129). Isso sugere que um uso menor da caixa postal pode estar associado a taxas de rotatividade mais altas.</p><p>O resultado do teste qui-quadrado de 43,645 com um valor de p de 0,000 sugere que há uma associação estatisticamente significativa entre ter um plano de caixa postal e a taxa de rotatividade, assim como entre o uso da caixa postal e a taxa de rotatividade. Isso significa que é improvável que essas associações sejam devidas ao acaso.</p>
+    
 <li><p>Hipótese 4: Clientes que fazem mais chamadas para o serviço de atendimento ao cliente são mais propensos a churn. Isso ocorre porque clientes que precisam fazer várias chamadas para o serviço de atendimento ao cliente podem ter tido uma experiência negativa com o serviço da empresa e podem ser mais propensos a mudar para um concorrente.</p></li>
-<li><p>Hipótese 5: Clientes que usam o serviço com mais frequência durante o dia, à noite e à noite têm menos probabilidade de churn. Isso ocorre porque clientes que usam o serviço com mais frequência podem ter uma necessidade maior pelos serviços da empresa e podem ser menos propensos a mudar para um concorrente.</p></li>
+    
+<img src="churn_project_pictures/churn_rate_no_cust_serv_calls.png" width="60%" height="400px"> 
+
+<p>Com base no gráfico, observa-se uma associação entre o número de chamadas para o serviço de atendimento e a taxa de rotatividade. De forma geral, verifica-se que os clientes que deixaram o serviço apresentaram um maior número de chamadas para o serviço de atendimento em comparação com aqueles que permaneceram.</p>
+    
+<li><p>Hipótese 5: Clientes que usam o serviço com mais frequência durante o dia, à tarde e à noite têm menos probabilidade de churn. Isso ocorre porque clientes que usam o serviço com mais frequência podem ter uma necessidade maior pelos serviços da empresa e podem ser menos propensos a mudar para um concorrente.</p></li>
+    
+<p>Para visualizar melhor como o uso do serviço influencia a taxa de rotatividade, clusterizamos os dados em três grupos com base na quantidade de minutos usados durante o dia, tarde e noite. Os resultados em termos de taxa de rotatividade foram os seguintes:</p>
+<ul><li>Taxa de rotatividade por cluster:<ul><li>Cluster 0: 0,117925</li><li>Cluster 1: 0,110741</li><li>Cluster 2: 0,193152</li></ul></li></ul>
+  
+<img src="churn_project_pictures/churn_rate_by_usage.png" width="50%" height="400px"> 
+
+<p>Ao analisar o gráfico de segmentação dos clientes por uso, é possível observar que o Cluster 2 se destaca dos demais, apresentando uma taxa de rotatividade quase o dobro dos outros grupos. Além disso, esse grupo se caracteriza por ter um maior total de minutos usados durante os três períodos do dia.</p>
+<p>Esses resultados indicam que há uma relação entre o uso do serviço e a taxa de rotatividade, onde o Cluster 2, com um maior volume de minutos utilizados, apresenta uma taxa de rotatividade mais elevada em comparação aos outros grupos.</p>
+    
 <li><p>Hipótese 6: Clientes que são cobrados mais por suas chamadas, tanto durante o dia quanto à noite, são mais propensos a churn. Isso ocorre porque clientes que são cobrados mais podem estar insatisfeitos com a política de preços da empresa e podem ser mais propensos a mudar para um concorrente.</p></li>
-<li><p>Hipótese 7: Clientes podem churn se mudarem para uma área onde seu serviço de telecomunicações atual não está disponível.</p></li>
-</ul>
+    
+<img src="churn_project_pictures/churn_by_total_charge.png" width="70%" height="400px"> 
+    
+<p>Clientes que são cobrados mais por suas chamadas têm maior probabilidade de cancelar o serviço. Embora exista apenas uma pequena diferença, como mostrado no gráfico, entre o valor total das cobranças para os clientes que cancelaram e aqueles que não cancelaram.</p>
+    
+<li><p>Hipótese 7: Clientes podem cancelar o serviço (churn) se mudarem para uma área onde seu serviço de telecomunicações atual não está disponível.</p></li>
+    
+<p>Para determinar isso, precisaríamos reunir informações sobre a disponibilidade dos serviços da empresa de telecomunicações em cada região, estado e condado, o que não é possível uma vez que o nome da empresa objeto dessa análise não é revelado. Além disso, também precisaríamos da área do novo cliente.</p>
+    
+<img src="churn_project_pictures/churn_rate_by_state.png" width="110%" height="300px"> 
+    
+<img src="churn_project_pictures/churn_by_region.png" width="70%" height="400px">
 
-<dt>2.6. Seleção de variáveis:</dt> 
+<img src="churn_project_pictures/churn_by_county.png" width="70%" height="400px">
+    
+<p>No entanto, com base nas informações que temos, analisamos a taxa de rotatividade por estado, região e código de área do condado e constatamos que:</p><ul><li>Nova Jersey e Califórnia têm uma taxa de rotatividade superior a 30%.</li><li>O Nordeste tem a maior taxa de rotatividade, aproximadamente 16%.</li><li>Não houve diferença significativa entre a taxa de rotatividade para as 3 diferentes áreas de código.</li></ul></div></ul>
+      
+<p>Conclusões Gerais: Em geral, podemos observar que algumas variáveis não são muito preditivas, uma vez que não há diferenças muito significativas entre os grupos. Além disso, podemos resumir as conclusões da seguinte forma:</p><ul><li>Clientes com um período de conta mais longo têm uma leve tendência a cancelar o serviço em comparação com clientes com período de conta mais curto, embora o efeito não seja forte.</li><li>Clientes com um plano internacional têm uma maior probabilidade de cancelar o serviço.</li><li>Clientes com um plano de correio de voz e um maior número de mensagens de correio de voz têm uma menor probabilidade de cancelar o serviço.</li><li>O número de chamadas para o serviço de atendimento ao cliente está associado ao cancelamento do serviço nesse conjunto de dados.</li><li>Clientes que usam o serviço com mais frequência durante o dia, à noite e durante a madrugada têm uma maior probabilidade de cancelar o serviço.</li><li>Clientes que são cobrados mais por suas chamadas têm uma maior probabilidade de cancelar o serviço. No entanto, há apenas uma pequena diferença entre as cobranças totais para clientes que cancelaram e aqueles que não cancelaram o serviço.</li><li>New Jersey e Califórnia têm uma taxa de cancelamento acima de 30%.</li><li>A região Nordeste tem a maior taxa de cancelamento, aproximadamente 16%.</li><li>Não houve diferença significativa na taxa de cancelamento entre as 3 áreas de código distintas.</li></ul>
+      
+<h2 id="preparacao-dos-dados">3. Preparação dos dados</h2>
+      
+<dt>3.1. Transformação dos dados:</dt>
+      <dd><b>Objetivo: </b>Nesta etapa, os dados são modificados ou reestruturados para atender às necessidades específicas da análise. Isso pode incluir a criação de novas variáveis, a normalização ou padronização de dados numéricos, a codificação de variáveis categóricas, entre outros.s</dd>
+      <p>Dado o contexto, uma informação relevante a ser adicionada é a explicação sobre a importância da codificação target encoding para lidar com variáveis categóricas de alta cardinalidade.</p><p>Ao utilizar o target encoding, substituímos os valores categóricos por valores numéricos com base na variável alvo, o que proporciona uma representação mais compacta e eficiente dos dados. Esse tipo de codificação é especialmente útil quando lidamos com variáveis categóricas que possuem um grande número de categorias, como no caso da variável "state" com suas 51 classes.</p><p>Ao contrário da codificação one-hot, em que cada categoria se torna uma nova coluna binária, o target encoding mantém as informações originais dentro de uma única característica, preservando a estrutura e a representatividade dos dados. Isso evita a criação de conjuntos de dados esparsos e de alta dimensionalidade, que podem impactar negativamente a performance e eficiência dos modelos de análise.</p><p>Portanto, o uso do target encoding se mostra uma escolha adequada para lidar com variáveis categóricas de alta cardinalidade, permitindo uma representação mais eficiente dos dados e evitando os problemas associados à codificação one-hot em tais situações.</p>
+
+<dt>3.2. Seleção de variáveis:</dt> 
       <dd><b>Objetivo: </b>Selecionar as variáveis mais relevantes para o problema de churn, levando em consideração a correlação com a variável de interesse, a redundância entre as variáveis e a facilidade de obtenção dos dados.</dd>
+ <p>Utilizamos o coeficiente de correlação ponto-bisserial para determinar a correlação entre as variáveis contínuas e a variável alvo (binária). Em seguida, utilizamos o coeficiente de correlação phi para determinar a correlação entre as variáveis binárias e a variável alvo. Por fim, aplicamos a técnica de Random Forest para calcular a importância das variáveis.</p>
+  <p>Considerando o contexto descrito, seria relevante acrescentar a explicação sobre a utilização dessas técnicas e suas implicações na análise dos dados.</p><p>Ao utilizar o coeficiente de correlação ponto-bisserial e o coeficiente de correlação phi, buscamos entender a relação entre as variáveis independentes (contínuas e binárias, respectivamente) e a variável dependente (binária), ou seja, se existe uma associação entre elas. Esses coeficientes fornecem medidas de correlação que nos auxiliam a compreender a direção e a força dessas relações.</p><p>Já o uso da técnica Random Forest feature importance é realizado com o objetivo de avaliar a importância relativa das variáveis na predição da variável alvo. Por meio dessa técnica, podemos identificar quais variáveis têm maior influência na determinação do resultado desejado, fornecendo insights valiosos para a análise e interpretação dos resultados.</p><p>Assim, ao utilizar essas técnicas em conjunto, é possível obter uma visão mais completa sobre as relações entre as variáveis e identificar quais são as mais relevantes para a predição do resultado desejado no contexto do estudo em questão.</p>
+      
+      
+  <img src="churn_project_pictures/point_biserial_correlation.png" width="90%" height="400px">
+  <img src="churn_project_pictures/phi_coeficient.png" width="70%" height="400px">
+  <img src="churn_project_pictures/feature_importances.png" width="70%" height="400px">
+      
+<p>Para a seleção final das variáveis, levamos em consideração os coeficientes de correlação e a importância atribuída por meio da técnica Random Forest Feature Importance. Após essa análise, removemos as variáveis redundantes, resultando em um total de 8 variáveis selecionadas:</p><ul><li>'total_day_minutes'</li><li>'state_encoded'</li><li>'number_customer_service_calls'</li><li>'international_plan'</li><li>'cluster_encoded'</li><li>'number_vmail_messages'</li><li>'high_day_usage'</li><li>'voice_mail_plan'</li></ul><p>Essas variáveis foram identificadas como as mais relevantes para a análise e predição do resultado desejado, considerando seus coeficientes de correlação com a variável alvo e sua importância no contexto do modelo Random Forest.</p>
+      
+<dt>3.3. Balanceamento de dados:</dt> 
+      <dd><b>Objetivo: </b>O objetivo do balanceamento de dados é corrigir a distribuição desigual das classes, buscando uma representação mais equilibrada e justa para o treinamento de modelos preditivos.</dd>
+      <p>Para melhor compreender as características do desbalanceamento deste conjunto de dados, utilizamos a técnica chamada t-SNE para visualizar os dados em um gráfico. Através dessa visualização, identificamos não apenas o desbalanceamento, mas também a sobreposição de classes, o que torna o problema de classificação ainda mais desafiador.</p><p>A fim de lidar com esse desbalanceamento, aplicamos o método de undersampling chamado Instance Hardness Threshold (IHT). O Instance Hardness Threshold (IHT) é uma técnica de undersampling que visa lidar com o desbalanceamento de classes em conjuntos de dados. Ele se baseia na ideia de identificar e remover amostras consideradas "hard" ou difíceis de classificar. No entanto, antes de aplicar o IHT, realizamos uma etapa de oversampling, uma vez que estamos trabalhando com um conjunto de dados relativamente pequeno.</p><p>Em seguida, ajustamos o modelo utilizando diferentes algoritmos e estratégias, buscando identificar qual obteve melhor desempenho na classificação dos dados. Essa abordagem nos permite explorar diferentes modelos e técnicas, avaliando qual apresenta uma performance mais promissora no contexto específico deste conjunto de dados.</p>
+      
+   <img src="churn_project_pictures/t-sne_visualization_before_iht.png" width="50%" height="400px">
+   <img src="churn_project_pictures/t-sne_visualization_after_iht.png" width="70%" height="400px">
 
-<dt>2.7. Identificação de dados sensíveis:</dt> 
-  <dd><b>Objetivo: </b>Identificar se existem dados sensíveis que precisam ser tratados de forma especial para garantir a privacidade e a segurança dos clientes.</dd> 
-      <dd>Não há dados sensíveis nesse projeto.</dd>
-
-<dt>2.8. Preparação dos dados:</dt>
-  <dd>Preparar os dados para a próxima etapa, que envolve a construção dos modelos de predição de churn. Isso pode incluir a normalização dos dados, a transformação de variáveis, a criação de variáveis derivadas e a divisão dos dados em conjuntos de treinamento e teste.</dd>
+      <dt id="modelagem">4. Modelagem</dt>
+      <dd><b>Objetivo: </b>Construir modelos de mineração de dados que sejam capazes de resolver o problema de negócio ou atingir os objetivos do projeto</dd>
+ p>A seleção dos algoritmos de machine learning considerou as limitações do conjunto de dados, que são: tamanho pequeno, desbalanceamento, variáveis pouco preditivas e sobreposição de classes. As técnicas escolhidas foram:</p><ul><li><p>Árvores de Decisão: Adequadas para conjuntos de dados desbalanceados, com sobreposição de classes e variáveis pouco preditivas. Selecionam automaticamente as variáveis relevantes e oferecem interpretabilidade dos resultados.</p></li><li><p>Voting Classifier: Beneficia-se do desbalanceamento, variáveis pouco preditivas e sobreposição de classes, combinando diferentes modelos de classificação para lidar com essas características específicas. Melhora a precisão geral da predição.</p></li><li><p>Random Forest: Combina várias árvores de decisão, lidando com sobreposição de classes, desbalanceamento e variáveis pouco preditivas. Fornece avaliação robusta da importância das variáveis.</p></li><li><p>Support Vector Machines (SVM): Eficaz em conjuntos de dados pequenos, desbalanceados e com sobreposição de classes. Encontra hiperplanos de separação utilizando funções de kernel.</p></li><li><p>K-Nearest Neighbor (k-vizinhos mais próximos): Adequado para predição de churn devido à capacidade de lidar com desbalanceamento, capturar padrões com variáveis pouco preditivas e ajustar parâmetros, além de utilizar técnicas de pré-processamento para tratar sobreposição de classes. Ajustes de parâmetros e pré-processamento são importantes para obter resultados otimizados, considerando as limitações específicas do conjunto de dados.</p></li></ul>
+     <p>Entre os algoritmos testados, os mais simples tiveram um desempenho ligeiramente melhor, o que era esperado devido ao tamanho reduzido do conjunto de dados. Algoritmos mais complexos tendem a sofrer de overfitting, ajustando-se muito bem aos dados de treinamento, mas com dificuldade de generalização para novos dados.</p>
+<p>Dentre os algoritmos testados, optamos pelo SVM, que apresentou um equilíbrio melhor entre as medidas de recall e precisão para ambas as classes (0 e 1), mesmo diante do overfitting observado em todos os modelos. Os resultados são apresentados abaixo."</p>
+    
+    <img src="churn_project_pictures/classification_report.png" width="70%" height="400px">
+    <img src="churn_project_pictures/roc_curve.png" width="70%" height="400px">
+    <img src="churn_project_pictures/confusion_matrix.png" width="70%" height="400px">
 
       
   </dl>
