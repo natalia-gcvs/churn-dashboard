@@ -179,7 +179,16 @@
     
 <p>No entanto, com base nas informações que temos, analisamos a taxa de rotatividade por estado, região e código de área do condado e constatamos que:</p><ul><li>Nova Jersey e Califórnia têm uma taxa de rotatividade superior a 30%.</li><li>O Nordeste tem a maior taxa de rotatividade, aproximadamente 16%.</li><li>Não houve diferença significativa entre a taxa de rotatividade para as 3 diferentes áreas de código.</li></ul></div></ul>
       
-<p>Conclusões Gerais: Em geral, podemos observar que algumas variáveis não são muito preditivas, uma vez que não há diferenças muito significativas entre os grupos. Além disso, podemos resumir as conclusões da seguinte forma:</p><ul><li>Clientes com um período de conta mais longo têm uma leve tendência a cancelar o serviço em comparação com clientes com período de conta mais curto, embora o efeito não seja forte.</li><li>Clientes com um plano internacional têm uma maior probabilidade de cancelar o serviço.</li><li>Clientes com um plano de correio de voz e um maior número de mensagens de correio de voz têm uma menor probabilidade de cancelar o serviço.</li><li>O número de chamadas para o serviço de atendimento ao cliente está associado ao cancelamento do serviço nesse conjunto de dados.</li><li>Clientes que usam o serviço com mais frequência durante o dia, à noite e durante a madrugada têm uma maior probabilidade de cancelar o serviço.</li><li>Clientes que são cobrados mais por suas chamadas têm uma maior probabilidade de cancelar o serviço. No entanto, há apenas uma pequena diferença entre as cobranças totais para clientes que cancelaram e aqueles que não cancelaram o serviço.</li><li>New Jersey e Califórnia têm uma taxa de cancelamento acima de 30%.</li><li>A região Nordeste tem a maior taxa de cancelamento, aproximadamente 16%.</li><li>Não houve diferença significativa na taxa de cancelamento entre as 3 áreas de código distintas.</li></ul>
+<p>Conclusões Gerais: Em geral, podemos observar que algumas variáveis não são muito preditivas, uma vez que não há diferenças muito significativas entre os grupos. Além disso, podemos resumir as conclusões da seguinte forma:</p>
+<ul>
+<li>Clientes com um período de conta mais longo têm uma leve tendência a cancelar o serviço em comparação com clientes com período de conta mais curto, embora o efeito não seja forte.</li>
+<li>Clientes com um plano internacional têm uma maior probabilidade de cancelar o serviço.</li>
+<li>Clientes com um plano de correio de voz e um maior número de mensagens de correio de voz têm uma menor probabilidade de cancelar o serviço.</li>
+<li>O número de chamadas para o serviço de atendimento ao cliente está associado ao cancelamento do serviço nesse conjunto de dados.</li><li>Clientes que usam o serviço com mais frequência durante o dia, à noite e durante a madrugada têm uma maior probabilidade de cancelar o serviço.</li>
+<li>Clientes que são cobrados mais por suas chamadas têm uma maior probabilidade de cancelar o serviço. No entanto, há apenas uma pequena diferença entre as cobranças totais para clientes que cancelaram e aqueles que não cancelaram o serviço.</li><li>New Jersey e Califórnia têm uma taxa de cancelamento acima de 30%.</li>
+<li>A região Nordeste tem a maior taxa de cancelamento, aproximadamente 16%.</li>
+<li>Não houve diferença significativa na taxa de cancelamento entre as 3 áreas de código distintas.</li>
+</ul>
       
 <h2 id="preparacao-dos-dados">3. Preparação dos dados</h2>
       
@@ -197,24 +206,90 @@
   <img src="churn_project_pictures/phi_coeficient.png" width="70%" height="400px">
   <img src="churn_project_pictures/feature_importances.png" width="70%" height="400px">
       
-<p>Para a seleção final das variáveis, levamos em consideração os coeficientes de correlação e a importância atribuída por meio da técnica Random Forest Feature Importance. Após essa análise, removemos as variáveis redundantes, resultando em um total de 8 variáveis selecionadas:</p><ul><li>'total_day_minutes'</li><li>'state_encoded'</li><li>'number_customer_service_calls'</li><li>'international_plan'</li><li>'cluster_encoded'</li><li>'number_vmail_messages'</li><li>'high_day_usage'</li><li>'voice_mail_plan'</li></ul><p>Essas variáveis foram identificadas como as mais relevantes para a análise e predição do resultado desejado, considerando seus coeficientes de correlação com a variável alvo e sua importância no contexto do modelo Random Forest.</p>
+<p>Para a seleção final das variáveis, levamos em consideração os coeficientes de correlação e a importância atribuída por meio da técnica Random Forest Feature Importance. Após essa análise, removemos as variáveis redundantes, resultando em um total de 8 variáveis selecionadas:</p>
+<ul>
+<li>'total_day_minutes'</li>
+<li>'state_encoded'</li>
+<li>'number_customer_service_calls'</li>
+<li>'international_plan'</li>
+<li>'cluster_encoded'</li>
+<li>'number_vmail_messages'</li>
+<li>'high_day_usage'</li>
+<li>'voice_mail_plan'</li>
+</ul>
+<p>Essas variáveis foram identificadas como as mais relevantes para a análise e predição do resultado desejado, considerando seus coeficientes de correlação com a variável alvo e sua importância no contexto do modelo Random Forest.</p>
       
 <dt>3.3. Balanceamento de dados:</dt> 
       <dd><b>Objetivo: </b>O objetivo do balanceamento de dados é corrigir a distribuição desigual das classes, buscando uma representação mais equilibrada e justa para o treinamento de modelos preditivos.</dd>
-      <p>Para melhor compreender as características do desbalanceamento deste conjunto de dados, utilizamos a técnica chamada t-SNE para visualizar os dados em um gráfico. Através dessa visualização, identificamos não apenas o desbalanceamento, mas também a sobreposição de classes, o que torna o problema de classificação ainda mais desafiador.</p><p>A fim de lidar com esse desbalanceamento, aplicamos o método de undersampling chamado Instance Hardness Threshold (IHT). O Instance Hardness Threshold (IHT) é uma técnica de undersampling que visa lidar com o desbalanceamento de classes em conjuntos de dados. Ele se baseia na ideia de identificar e remover amostras consideradas "hard" ou difíceis de classificar. No entanto, antes de aplicar o IHT, realizamos uma etapa de oversampling, uma vez que estamos trabalhando com um conjunto de dados relativamente pequeno.</p><p>Em seguida, ajustamos o modelo utilizando diferentes algoritmos e estratégias, buscando identificar qual obteve melhor desempenho na classificação dos dados. Essa abordagem nos permite explorar diferentes modelos e técnicas, avaliando qual apresenta uma performance mais promissora no contexto específico deste conjunto de dados.</p>
+      <p>Para melhor compreender as características do desbalanceamento deste conjunto de dados, utilizamos a técnica chamada t-SNE para visualizar os dados em um gráfico. Através dessa visualização, identificamos não apenas o desbalanceamento, mas também a sobreposição de classes, o que torna o problema de classificação ainda mais desafiador.</p><p>A fim de lidar com esse desbalanceamento, aplicamos o método de undersampling chamado Instance Hardness Threshold (IHT). O Instance Hardness Threshold (IHT) é uma técnica de undersampling que visa lidar com o desbalanceamento de classes em conjuntos de dados. Ele se baseia na ideia de identificar e remover amostras consideradas "hard" ou difíceis de classificar. No entanto, antes de aplicar o IHT, realizamos uma etapa de oversampling, usando uma técnica chamada <a href="">Adasyn</a>, uma vez que estamos trabalhando com um conjunto de dados relativamente pequeno.</p><p>Em seguida, ajustamos o modelo utilizando diferentes algoritmos e estratégias, buscando identificar qual obteve melhor desempenho na classificação dos dados. Essa abordagem nos permite explorar diferentes modelos e técnicas, avaliando qual apresenta uma performance mais promissora no contexto específico deste conjunto de dados.</p>
       
    <img src="churn_project_pictures/t-sne_visualization_before_iht.png" width="50%" height="400px">
    <img src="churn_project_pictures/t-sne_visualization_after_iht.png" width="70%" height="400px">
 
-      <dt id="modelagem">4. Modelagem</dt>
-      <dd><b>Objetivo: </b>Construir modelos de mineração de dados que sejam capazes de resolver o problema de negócio ou atingir os objetivos do projeto</dd>
- p>A seleção dos algoritmos de machine learning considerou as limitações do conjunto de dados, que são: tamanho pequeno, desbalanceamento, variáveis pouco preditivas e sobreposição de classes. As técnicas escolhidas foram:</p><ul><li><p>Árvores de Decisão: Adequadas para conjuntos de dados desbalanceados, com sobreposição de classes e variáveis pouco preditivas. Selecionam automaticamente as variáveis relevantes e oferecem interpretabilidade dos resultados.</p></li><li><p>Voting Classifier: Beneficia-se do desbalanceamento, variáveis pouco preditivas e sobreposição de classes, combinando diferentes modelos de classificação para lidar com essas características específicas. Melhora a precisão geral da predição.</p></li><li><p>Random Forest: Combina várias árvores de decisão, lidando com sobreposição de classes, desbalanceamento e variáveis pouco preditivas. Fornece avaliação robusta da importância das variáveis.</p></li><li><p>Support Vector Machines (SVM): Eficaz em conjuntos de dados pequenos, desbalanceados e com sobreposição de classes. Encontra hiperplanos de separação utilizando funções de kernel.</p></li><li><p>K-Nearest Neighbor (k-vizinhos mais próximos): Adequado para predição de churn devido à capacidade de lidar com desbalanceamento, capturar padrões com variáveis pouco preditivas e ajustar parâmetros, além de utilizar técnicas de pré-processamento para tratar sobreposição de classes. Ajustes de parâmetros e pré-processamento são importantes para obter resultados otimizados, considerando as limitações específicas do conjunto de dados.</p></li></ul>
-     <p>Entre os algoritmos testados, os mais simples tiveram um desempenho ligeiramente melhor, o que era esperado devido ao tamanho reduzido do conjunto de dados. Algoritmos mais complexos tendem a sofrer de overfitting, ajustando-se muito bem aos dados de treinamento, mas com dificuldade de generalização para novos dados.</p>
-<p>Dentre os algoritmos testados, optamos pelo SVM, que apresentou um equilíbrio melhor entre as medidas de recall e precisão para ambas as classes (0 e 1), mesmo diante do overfitting observado em todos os modelos. Os resultados são apresentados abaixo."</p>
+<dt id="modelagem">4. Modelagem</dt>
+<dd><b>Objetivo: </b>Construir modelos de mineração de dados que sejam capazes de resolver o problema de negócio ou atingir os objetivos do projeto</dd>
+ p>A seleção dos algoritmos de machine learning considerou as limitações do conjunto de dados, que são: tamanho pequeno, desbalanceamento, variáveis pouco preditivas e sobreposição de classes. As técnicas escolhidas foram:</p>
+<ul>
+<li><p>Árvores de Decisão: Adequadas para conjuntos de dados desbalanceados, com sobreposição de classes e variáveis pouco preditivas. Selecionam automaticamente as variáveis relevantes e oferecem interpretabilidade dos resultados.</p></li>
+<li><p>Voting Classifier: Beneficia-se do desbalanceamento, variáveis pouco preditivas e sobreposição de classes, combinando diferentes modelos de classificação para lidar com essas características específicas. Melhora a precisão geral da predição.</p></li>
+<li><p>Random Forest: Combina várias árvores de decisão, lidando com sobreposição de classes, desbalanceamento e variáveis pouco preditivas. Fornece avaliação robusta da importância das variáveis.</p></li>
+<li><p>Support Vector Machines (SVM): Eficaz em conjuntos de dados pequenos, desbalanceados e com sobreposição de classes. Encontra hiperplanos de separação utilizando funções de kernel.</p></li>
+<li><p>K-Nearest Neighbor (k-vizinhos mais próximos): Adequado para predição de churn devido à capacidade de lidar com desbalanceamento, capturar padrões com variáveis pouco preditivas e ajustar parâmetros, além de utilizar técnicas de pré-processamento para tratar sobreposição de classes. Ajustes de parâmetros e pré-processamento são importantes para obter resultados otimizados, considerando as limitações específicas do conjunto de dados.</p></li>
+    </ul>
+ <p>Entre os algoritmos testados, a maioria dos algoritmos sofreram overfitting, ajustando-se muito bem aos dados de treinamento, mas com dificuldade de generalização para novos dados.</p>
+<p>Dentre os algoritmos testados, optamos pelo Voting Classifier, que apresentou um equilíbrio melhor entre as medidas de recall e precisão para ambas as classes (0 e 1), mesmo diante do overfitting observado em todos os modelos. Os resultados são apresentados abaixo."</p>
     
-    <img src="churn_project_pictures/classification_report.png" width="70%" height="400px">
-    <img src="churn_project_pictures/roc_curve.png" width="70%" height="400px">
-    <img src="churn_project_pictures/confusion_matrix.png" width="70%" height="400px">
+<img src="churn_project_pictures/classification_report.png" width="50%" height="300px">
+<img src="churn_project_pictures/classification_report_without_iht.png" width="50%" height="300px">
+
+<p>As imagens exibem os resultados das métricas de Precisão, Recall e F1. É evidente que houve uma melhora significativa no desempenho do modelo após a aplicação da técnica Instance Hardness Threshold, porém ainda não é o ideal. Além disso, testamos o desempenho do modelo após a aplicação da técnica ADASYN, tanto isoladamente quanto combinada com o IHT. No entanto, todos os modelos testados apresentaram um melhor desempenho quando não houve oversampling e quando a técnica do IHT foi aplicada.</p>
+    
+<p>Esse comportamento pode ser atribuído a algumas razões. Primeiramente, a aplicação do Instance Hardness Threshold (IHT) ajudou a eliminar instâncias mais ruidosas ou de difícil classificação, melhorando a qualidade dos dados de treinamento. Isso resultou em um modelo mais preciso e com melhor capacidade de generalização.</p><p>Por outro lado, a aplicação da técnica ADASYN pode ter introduzido um viés nos dados ao gerar instâncias sintéticas para a classe minoritária. Isso significa que as instâncias sintéticas podem não ser representativas da verdadeira distribuição da classe minoritária. Essas instâncias podem ter características que não refletem fielmente os padrões e a variabilidade dos exemplos reais da classe.</p><p>Além disso, ao combinar o ADASYN com o IHT, pode haver uma interação complexa entre as duas técnicas, resultando em um desempenho inferior. A geração de instâncias sintéticas pode introduzir ruído adicional nos dados e prejudicar a separabilidade das classes.</p><p>Portanto, os resultados indicam que, para esse caso especificamente, a não aplicação de oversampling e a utilização apenas da técnica IHT levaram a um desempenho superior do modelo.</p>
+
+<p>Não foi realizada uma tentativa de ajuste fino do modelo, uma vez que, geralmente, aumentar a complexidade do modelo não costuma melhorar a sua performance e pode piorar a situção do overfitting.</p>
+    
+<dt id="avaliacao-do-modelo">5. Avaliação do modelo</dt>
+    
+<img src="churn_project_pictures/roc_curve.png" width="60%" height="400px">
+    
+<div><p>AUC de 0,62: O valor de AUC indica que o modelo possui algum poder discriminatório em distinguir entre as classes positiva e negativa. No entanto, sugere que o desempenho preditivo do modelo pode ser moderado, uma vez que um valor de AUC de 0,5 representa uma suposição aleatória e valores mais altos indicam um melhor desempenho.</p></div>
+    
+<img src="churn_project_pictures/confusion_matrix.png" width="50%" height="300px">
+    
+<p>Matriz de Confusão: A matriz de confusão fornece mais informações sobre as previsões do modelo. Vejamos como podemos interpretar os valores:</p>
+<ul>
+<li>Verdadeiros Negativos (VN): O modelo previu corretamente 515 instâncias como churn negativo.</li>
+<li>Falsos Positivos (FP): O modelo previu incorretamente 215 instâncias como churn positivo quando na verdade eram negativas.</li>
+<li>Falsos Negativos (FN): O modelo previu incorretamente 56 instâncias como churn negativo quando na verdade eram positivas.</li><li>Verdadeiros Positivos (VP): O modelo previu corretamente 64 instâncias como churn positivo.</li>
+</ul>
+<p>Considerando que a previsão de churn é o interesse principal e que classificar todas as entradas positivas com precisão é importante, devemos focar no desempenho na classe positiva. Nesse caso, o desempenho do modelo pode ser melhorado, pois ele possui um número relativamente maior de falsos negativos (56) em comparação com os verdadeiros positivos (64).</p>
+    
+<dt id="deployment">6. Implantação/Deployment</dt>
+
+<p>Embora o desempenho do modelo não tenha sido satisfatório, consideramos essa fase como a primeira iteração do nosso projeto, na qual obtivemos insights importantes sobre o problema. O diagrama do CRISP-DM apresentado no início destaca o fato de que a iteração é a norma e não a exceção. Passar pelo processo uma vez sem resolver completamente o problema geralmente não é um fracasso. Frequentemente, todo o processo é uma exploração dos dados e, após a primeira iteração, a equipe de ciência de dados adquire um conhecimento muito mais amplo. A próxima iteração pode ser feita com base nesse conhecimento mais aprofundado.</p>
+<p> A proposta de deployment para esse projeto é um app no qual após realizado o login voce tem acesso ao dashboard contendo informacoes sobre clientes mais propensos a deixar o serviço, receita mensal proveniente desses clientes taxa de retenção, taxa de rotatividade across estados. Uma vez que o modelo esteja ajustado podemos aplicar o modelo para realizar a previsão podemos detectar clientes mais propensos a deixar a empresa prematuramente.</p>   
+
+<p><a href="https://churn-dashboard-jn9c.onrender.com/dashboard">VISITE O APP CLICANDO AQUI</a></p>   
+<p>email - nat@example.com</p>
+<p>senha - nat@123</p>
+     
+<dt id="limitacoes">7. Limitações e pontos a serem melhorados</dt>
+    
+<ul>
+<li><p>Desempenho insatisfatório: O modelo apresentou um desempenho moderado, com uma AUC de 0,62 e um número relativamente alto de falsos negativos em relação aos verdadeiros positivos. Isso indica que o modelo tem dificuldade em identificar corretamente as instâncias positivas de churn.</p></li>
+<li><p>Desequilíbrio de classes: O conjunto de dados apresenta um desequilíbrio entre as classes positiva e negativa de churn. Isso pode afetar a capacidade do modelo de aprender padrões e fazer previsões precisas para a classe minoritária.</p></li>
+<li><p>Overlapping entre classes: Existe uma sobreposição entre as características das classes positiva e negativa de churn, o que torna mais desafiador para o modelo distingui-las com precisão.</p></li>
+<li><p>Tamanho pequeno do conjunto de dados: O conjunto de dados utilizado para treinar e avaliar o modelo é pequeno. Isso pode limitar a capacidade do modelo de generalizar para novos dados e pode levar a um maior impacto de variações aleatórias nos resultados.</p></li>
+<li>Variáveis com baixo poder preditivo: A maioria das variáveis demonstrou baixa correlação com a variável alvo</li>
+</ul>
+<p>Para melhorar o modelo, seria recomendado considerar abordagens como:</p>
+    <p></p>
+<ul>
+<li><p>Explorar outra técnicas de resampling para lidar com o desequilíbrio de classes.</p></li>
+<li><p>Realizar uma validação cruzada mais rigorosa e avaliar o desempenho do modelo em diferentes conjuntos de dados de teste para obter uma avaliação mais confiável de sua capacidade de generalização.</p></li>
+<li><p>Criar outras novas variáveis relevantes ou transformar as existentes de maneiras que possam melhorar a discriminação entre as classes de churn.</p></li>
+</ul>
+ 
 
       
   </dl>
