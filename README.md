@@ -269,7 +269,7 @@
 <p>Embora o desempenho do modelo não tenha sido satisfatório, consideramos essa fase como a primeira iteração do nosso projeto, na qual obtivemos insights importantes sobre o problema. O diagrama do CRISP-DM apresentado no início destaca o fato de que a iteração é a norma e não a exceção. Passar pelo processo uma vez sem resolver completamente o problema geralmente não é um fracasso. Frequentemente, todo o processo é uma exploração dos dados e, após a primeira iteração, a equipe de ciência de dados adquire um conhecimento muito mais amplo. A próxima iteração pode ser feita com base nesse conhecimento mais aprofundado.</p>
 <p> A proposta de deployment para esse projeto é um app no qual após realizado o login voce tem acesso ao dashboard contendo informacoes sobre clientes mais propensos a deixar o serviço, receita mensal proveniente desses clientes taxa de retenção, taxa de rotatividade across estados. Uma vez que o modelo esteja ajustado podemos aplicar o modelo para realizar a previsão podemos detectar clientes mais propensos a deixar a empresa prematuramente.</p>   
 
-<p><a href="https://churn-dashboard-jn9c.onrender.com/dashboard">VISITE O APP CLICANDO AQUI</a></p>   
+<p><a href="https://churn-dashboard-production.up.railway.app/">VISITE O APP CLICANDO AQUI</a></p>   
 <p>email - nat@example.com</p>
 <p>senha - nat@123</p>
      
