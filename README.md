@@ -37,10 +37,10 @@
   <dl>
 <dl>
   <dt>1.1. Objetivo do projeto:</dt> 
-  <dd><b>Objetivo: </b>Entender claramente o objetivo do projeto, que neste caso é identificar antecipadamente os clientes com maior probabilidade de cancelar os serviços da empresa de telecomunicações (churn), a fim de tomar medidas proativas para mantê-los satisfeitos e evitar perdas de negócios.</dd>
+  <dd><b>Objetivo: </b>Identificar antecipadamente os clientes com maior probabilidade de cancelar os serviços da empresa de telecomunicações (churn), a fim de tomar medidas proativas para mantê-los satisfeitos e evitar perdas de negócios.</dd>
   
   <dt>1.2. Contexto do negócio:</dt> 
-  <dd><b>Objetivo: </b>Compreender o contexto em que o projeto está inserido, incluindo a situação competitiva do mercado, os tipos de serviços oferecidos, as políticas de preços, os canais de atendimento e a percepção dos clientes sobre a empresa. No entanto, uma das limitações deste projeto é que a fonte de dados disponível é o Kaggle e a empresa é anônima, o que restringe nossa capacidade de aprofundar a análise do contexto de negócios.</dd>
+  <dd><b>Objetivo: </b>O contexto do negócio involve compreender o contexto em que o projeto está inserido, incluindo a situação competitiva do mercado, os tipos de serviços oferecidos, as políticas de preços, os canais de atendimento e a percepção dos clientes sobre a empresa. No entanto, uma das limitações deste projeto é que a fonte de dados disponível é o Kaggle e a empresa é anônima, o que restringe nossa capacidade de aprofundar a análise do contexto de negócios.</dd>
   
   <dt>1.3. Fontes de dados:</dt> 
   <dd><b>Objetivo: </b>Identificar as fontes de dados disponíveis para o projeto, que podem incluir dados de faturamento, perfil dos clientes, histórico de uso dos serviços, informações sobre reclamações e cancelamentos de serviço, entre outros. Assim como na etapa anterior, estamos limitados às variáveis contidas no dataset, cuja fonte é o Kaggle.</dd>
